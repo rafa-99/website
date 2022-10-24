@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="author" content="Rafael Marçalo">
+		<meta name="description" content="Gentoo Install Manual">
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="styles/style.css">
+		<title>Gentoo Install Manual</title>
+	</head>
+
+	<body>
+		<div id="header">
+			<h1>Rafael Marçalo Website</h1>
+			<nav>
+				<a href="index.html">home</a>
+				|
+				<a href="archive.html">archive</a>
+				|
+				<a href="projects.html">projects</a>
+				|
+				<a href="donate.html">donate</a>
+			</nav>
+		</div>
+		<div id="content">
+			<h2 id="steps-to-install-gentoo-on-your-computer">Gentoo Install Manual</h2>
+			<p><strong>Warning</strong>: the installation can differ from 3 hours to 3 days or more, depending on your installation complexity.</p>
+
+			<h3 id="booting-up-the-cd">Booting up the CD</h3>
+			<p>When booting up the CD you will be asked which kernel you want to load, I recommend going with the default kernel(<strong>Gentoo</strong>). So in the terminal type</p>
+			<p><code>gentoo</code></p>
+			<p>Then you will be asked which keyboard layout you want to use, just choose your current keyboard layout.</p>
+
+			<h3 id="connecting-to-the-internet">Connecting to the internet</h3>
+			<p>I recommend doing this step through wired connection for easier setup.</p>
+			<p>If you want to use wifi, I recommend using wpa_supplicant for a setup, in that case type the next commands:
+			</p>
+			<ol>
+				<li>
+					Type <code>wpa_passphrase YOUR_WIFI_SSID_HERE YOUR_WIFI_PASSWORD_HERE > /etc/wpa_supplicant/wpa_supplicant.conf</code>
+				</li>
+				<li>
+					Type <code>wpa_supplicant -i YOUR_WIFI_INTERFACE -c /etc/wpa_supplicant/wpa_supplicant.conf &</code>
+				</li>
+			</ol>
+			<p>This will use the file you created to connect to the wifi network.</p>
+			<p>Note: If you are using <em>wpa_supplicant</em> you might need to use the <strong>-D</strong> flag to choose your wifi adapter driver.</p>
+
+			<h3 id="partitioning">Partitioning</h3>
+			<p>I personally recommend you partitioning your disk with the <strong>cfdisk</strong> tool for easier visualization of your disk. In this case I’ll be using a MBR(dos) partition type and I recommend creating a 2 primary partitions, one for the <strong>swap</strong> partition and one for the <strong>/</strong>(<strong>root</strong>) partition. When creating a swap partition make sure to change the partition type to <em>Linux swap / Solaris</em>.</p>
+			<ol type="1">
+				<li>
+					Type <code>mkswap /dev/YOUR_SWAP_PARTITION_ID</code> to format the partition as a <strong>swap partition</strong>;
+				</li>
+				<li>
+					Type <code>mkfs.ext4 /dev/YOUR_ROOT_PARTITION_ID</code> to format your root partition as <strong>ext4</strong>;
+				</li>
+			</ol>
+
+			<h4 id="mounting-partitions">Mounting partitions</h4>
+			<p>Now we are going to mount the formatted partitions so we can then deploy the <strong>stage3</strong> package.</p>
+			<ol type="1">
+				<li>Type <code>swapon /dev/YOUR_SWAP_PARTITION_ID</code> to activate your swap partition;</li>
+				<li>Type <code>mount /dev/YOUR_ROOT_PARTITION_ID /mnt/gentoo</code> to mount your root partition.</li>
+			</ol>
+
+			<h3 id="installing-stage3-tarball">Installing stage3 tarball</h3>
+			<ol type="1">
+				<li><code>cd /mnt/gentoo</code> to go to the root partition directory;</li>
+				<li><code>links https://gentoo.org/downloads/</code> to open links, a ncurses based web browser and download the stage3 tarball from there;</li>
+				<li>
+					After downloading the stage3 tarball type <code>tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner</code> to unpack it to the root directory;
+				</li>
+				<li>After unpacking the tarball you can now delete it <code>rm -rf stage3-*.tar.xz</code>.</li>
+			</ol>
+
+			<h3 id="configuring-your-compiler">Configuring your Compiler</h3>
+			<p>In this phase you are going to configure <strong>portage</strong>, your package and “compiler”.</p>
+			<ol type="1">
+				<li>Type <code>nano -w /mnt/gentoo/etc/portage/make.conf</code>;</li>
+			</ol>
+			<p>Now, in your <code>make.conf</code> file you’ll find something like this</p>
+			<pre><code># Compiler flags to set for all languages
+COMMON_FLAGS=&quot;-march=native -O2 -pipe&quot;
+# Use the same settings for both variables
+CFLAGS=&quot;${COMMON_FLAGS}&quot;
+CXXFLAGS=&quot;${COMMON_FLAGS}&quot;</code></pre>
+			<p>In your <em>COMMON_FLAGS</em> variable you can tune and optimize your compiler with certain <em>CFLAGS</em> based on your CPU.</p>
+			<p>According to the <em>Gentoo Wiki</em>:</p>
+			<p>A first setting is the <code>-march=</code> or <code>-mtune=</code> flag, which specifies the name of the target architecture.</p>
+			<p>A second one is the <code>-O</code> flag (that is a capital O, not a zero), which specifies the gcc optimization class flag. Possible classes are s (for size-optimized), <code>0</code> (zero - for no optimizations), 1, 2 or even 3 for more speed-optimization flags (every class has the same flags as the one before, plus some extras).<code>-O2</code> is the recommended default. <code>-O3</code> is known to cause problems when used system-wide, so we recommend to stick to <code>-O2</code>.</p>
+			<p>Another popular optimization flag is -pipe (use pipes rather than temporary files for communication between the various stages of compilation). It has no impact on the generated code, but uses more memory. On systems with low memory, gcc might get killed. In that case, do not use this flag.</p>
+			<p>Find out more specific <a href="https://wiki.gentoo.org/wiki/Safe_CFLAGS">CPU Optimizations here</a>.</p>
+
+			<h4 id="makeopts">MAKEOPTS</h4>
+			<p>The MAKEOPTS variable defines how many parallel compilations should occur when installing a package. A good choice is the number of CPUs (or CPU cores) in the system plus one. In case you want to use MAKEOPTS, you should add this to your <code>make.conf</code> file</p>
+			<p><code>MAKEOPTS="-jCPU_CORES_PLUS_ONE"</code></p>
+
+			<h3 id="setting-up-gentoo-repos">Setting up <strong>Gentoo</strong> Repos</h3>
+
+			<h4 id="optional---setting-up-mirrors">OPTIONAL - Setting up Mirrors</h4>
+			<p>This step is optional but since you may want to download your source code faster, you might want to set your nearest mirrors with the next command</p>
+			<p><code>mirrorselect -i -o &gt;&gt; /mnt/gentoo/etc/portage/make.conf</code></p>
+			<p>It will open up to you a ncurses complete list of mirrors where you with the <em>spacebar</em> select the ones nearest to you.</p>
+
+			<h4 id="gentoo-ebuild-repository"><strong>Gentoo</strong> ebuild repository</h4>
+			<p>This file contains the sync information needed to update the package repository. To get this file to work type the next commands:</p>
+			<ol type="1">
+				<li><code>mkdir --parents /mnt/gentoo/etc/portage/repos.conf</code>;</li>
+				<li><code>cp /mnt/gentoo/usr/share/portage/config/repos.conf /mnt/gentoo/etc/portage/repos.conf/gentoo.conf</code></li>
+			</ol>
+
+			<h4 id="copying-dns-info">Copying DNS Info</h4>
+			<p><code>cp --dereference /etc/resolv.conf /mnt/gentoo/etc/</code></p>
+
+			<h3 id="mounting-the-remaining-filesystems">Mounting the remaining filesystems</h3>
+			<p>Now that you setup your root partition, now you need to prepare the environment so you can chroot into the root partition, you can mount the necessary file systems with next commands</p>
+			<pre><code>mount --types proc /proc /mnt/gentoo/proc
+mount --rbind /sys /mnt/gentoo/sys
+mount --make-rslave /mnt/gentoo/sys
+mount --rbind /dev /mnt/gentoo/dev
+mount --make-rslave /mnt/gentoo/dev
+mount --bind /run /mnt/gentoo/run
+mount --make-slave /mnt/gentoo/run</code></pre>
+
+			<h4 id="entering-the-new-environment">Entering the new environment</h4>
+			<p>Since you mounted the remaining file systems you can now chroot into your <strong>Gentoo</strong> installation with the next commands</p>
+			<pre><code>chroot /mnt/gentoo /bin/bash
+source /etc/profile
+export PS1=&quot;(chroot) ${PS1}&quot;</code></pre>
+
+			<h3 id="configuring-portage">Configuring Portage</h3>
+			<p>Next step is to install a snapshot of the main ebuild repository. This snapshot contains a collection of files that informs Portage about available software titles (for installation), which profiles the system administrator can select, package or profile specific news items, etc. To download this snapshot type</p>		<p><code>emerge-webrsync</code></p>
+
+			<h3 id="updating-ebuild-repository">Updating ebuild repository</h3>
+			<p>To sync portage with the snapshot you just downloaded type</p>
+			<p><code>emerge --sync</code></p>
+			<p>If you want to speedup the process by reducing frame buffers use</p>
+			<p><code>emerge --sync --quiet</code></p>
+
+			<h4 id="optional-set-up-ccache">OPTIONAL Set Up CCACHE</h4>
+			<p>In <strong>Gentoo</strong> ccache helps avoid repeated recompilation for the same C and C++ object files by fetching result from a cache directory.</p>
+			<p>If you want to setup ccache, type the following commands</p>
+			<ol type="1">
+				<li><code>emerge --ask dev-util/ccache</code> <em>This command will install ccache</em>;</li>
+				<li><code>mkdir -p /var/cache/ccache</code> <em>This will create a directory where C and C++ object files will be stored, you can set up the directory wherever you want, this is just the defaults</em>;</li>
+				<li><code>chown root:portage /var/cache/ccache</code> <em>To give portage permissions to acess that directory</em>;</li>
+				<li><code>chmod 2775 /var/cache/ccache</code> <em>Set this directory permissions</em>.</li>
+			</ol>
+			<p>Next up you configure ccache with the next config file at <em>/var/cache/ccache/ccache.conf</em></p>
+			<pre><code># Maximum cache size to maintain
+max_size = 100.0G
+
+# Allow others to run &#39;ebuild&#39; and share the cache.
+umask = 002
+
+# Preserve cache across GCC rebuilds and
+# introspect GCC changes through GCC wrapper.
+compiler_check = %compiler% -v
+
+# I expect 1.5M files. 300 files per directory.
+cache_dir_levels = 3</code></pre>
+			<p>And finally you add a ccache entry in your portage <code>make.conf</code> file</p>
+			<pre><code>FEATURES=&quot;ccache&quot;
+CCACHE_DIR=&quot;/var/cache/ccache&quot;</code></pre>
+			<p>You’re done, now your compilations will be much faster ;)</p>
+
+			<h4 id="optional-cpuid2cpuflags">OPTIONAL cpuid2cpuflags</h4>
+			<p>This tool guesses the host <em>CPU_FLAGS_*</em> based on their CPU. To get this tool to work, type the following commands</p>
+			<ol type="1">
+				<li><code>emerge --ask app-portage/cpuid2cpuflags</code> <em>This will install the tool</em>;</li>
+				<li><code>mkdir -p /etc/portage/package.use</code> <em>This will create a directory where the flags will be stored</em>;</li>
+				<li><code>echo "*/* $(cpuid2cpuflags)" &gt; /etc/portage/package.use/00cpuflags</code> <em>This will link the cpuid2cpuflags to portage make.conf</em>.</li>
+			</ol>
+			<p>You are done, now you are squeezing a bit more of performance out of your CPU =)</p>
+
+			<h3 id="choosing-your-profile">Choosing your profile</h3>
+			<p>A profile not only does it specify default values for <em>USE</em>, <em>CFLAGS</em>, and other important variables, it also locks the system to a certain range of package versions. You can see all the available profiles with <code>eselect profile list</code>, by default, it will preselect <code>default/linux/amd64/17.1</code>, and if you want to use your <strong>Gentoo</strong> system a desktop computer then you should select the <code>default/linux/amd64/17.1/desktop</code> profile, it will have the most appropriate <em>USE</em> and <em>CFLAGS</em> flags for your desktop daily use. Each profiles will have a correspondent number to it, so when you decide which profile you want to use, simply type</p>
+			<p><code>eselect profile set NUMBER_OF_PROFILE</code></p>
+
+			<h3 id="selecting-your-use-flags">Selecting your USE Flags</h3>
+			<p><em>USE</em> is one of the most powerful variables <strong>Gentoo</strong> provides to its users. Several programs can be compiled with or without optional support for certain items. For instance, some programs can be compiled with support for GTK+ or with support for Qt. Others can be compiled with or without SSL support. Some programs can even be compiled with frame buffer support (svgalib) instead of X11 support (X-server).</p>
+			<p>Most distributions compile their packages with support for as much as possible, increasing the size of the programs and startup time, not to mention an enormous amount of dependencies. With <strong>Gentoo</strong> users can define what options a package should be compiled with. This is where <em>USE</em> comes into play.</p>
+			<p>In the USE variable users define keywords which are mapped onto compile-options. For instance, ssl will compile SSL support in the programs that support it. <code>-X</code> will remove X-server support (note the minus sign in front). <code>gnome gtk -kde -qt4 -qt5</code> will compile programs with GNOME (and GTK+) support, and not with KDE (and Qt) support, making the system fully tweaked for GNOME (if the architecture supports it). </p>
+			<p>If you want to know which <em>USE</em> flags come by default in your profile just type</p>
+			<p><code>emerge --info | grep ^USE</code></p>
+			<p>To manage your <em>USE</em> flags, you can manage them in your portage <code>make.conf</code> with the <em>USE</em> variable. For example, if you wanted to build a system based on <em>qt</em> and <em>kde</em> you would set this <em>USE</em> flags in your <code>make.conf</code> file </p>
+			<p><code>USE="-gtk -gnome qt4 qt5 kde"</code></p>
+			<p>Make sure you select the right <em>USE</em> flags at this step of installation, because if after you are fully setup and decide to change your global <em>USE</em> flags, you might have to wait tons of hours just to recompile your entire system with the new <em>USE</em> flags</p>
+			<p>You can check all the global <em>USE</em> flags <a href="https://gentoo.org/support/use-flags/">here</a>.</p>
+
+			<h3 id="updating-and-recompiling-the-system">Updating and Recompiling the System</h3>
+			<p>This following step is necessary so the system can apply any updates or USE flag changes which have appeared since the stage3 was built and from any profile selection</p>
+			<p><code>emerge --ask --verbose --update --deep --newuse @world</code></p>
+
+			<h4 id="notes">Notes:</h4>
+			<ul>
+				<li>Warning this might take a long time depending on the <em>USE</em> flags you set;</li>
+				<li>In this step you might need to use the command <code>etc-update</code> to fix some package dependencies or even you might need to do manual intervention to some of the packages depending on the compiler error.</li>
+			</ul>
+
+			<h3 id="timezone">Timezone</h3>
+			<p>Now we start to install the actual system, first we need to choose a timezone, you can check the main available timezones with</p>
+			<p><code>ls /usr/share/zoneinfo</code></p>
+			<p>Once you chosen your directory option then use the same command but to see the sub-directories of your selected directory</p>
+			<p><code>ls /usr/share/zoneinfo/YOUR_SELECTED_MAIN_TIMEZONE/</code></p>
+			<p>Here you might choose the timezone that better suits you.</p>
+			<p>After you choose your timezone just add it to your <em>etc</em> directory with</p>
+			<p><code>echo "YOUR_SELECTED_MAIN_TIMEZONE/TIMEZONE_THAT_BETTER_SUITS_YOU" &gt; /etc/timezone</code></p>
+			<p>Now, just reload your timezone settings to apply system-wide with</p>
+			<p><code>emerge --config sys-libs/timezone-data</code></p>
+
+			<h4 id="example">Example</h4>
+			<p><code>echo "Europe/Lisbon" &gt; /etc/timezone</code></p>
+			<h3 id="locales">Locales</h3>
+			<p>Locales specify not only the language that the user should use to interact with the system, but also what the rules are for sorting strings, displaying dates and times, etc.</p>
+			<p>To set locales, open the <code>/etc/locale.gen</code> file and uncomment the locales you want to use, for example, if you want to use the US locales, just uncomment the next lines</p>
+			<pre><code>en_US ISO-8859-1
+en_US.UTF-8 UTF-8</code></pre>
+			<p>This will enable this locales and to generate the specified locales type</p>
+			<p><code>locale-gen</code></p>
+			<p>Now, to see the locales you can apply to your environment type</p>
+			<p><code>eselect locale list</code></p>
+			<p>You’ll see something like this</p>
+			<pre><code>Available targets for the LANG variable:
+  [1] C
+  [2] POSIX
+  [3] en_US
+  [4] en_US.iso88591
+  [5] en_US.utf8
+  [ ] (free form)</code></pre>
+			<p>And then, just like the <em>profile</em> you should select a locale number you prefer to apply to your LANG(language) variable, in this case I recommend to you, select a UTF8 locale. When you choose your locale, just type</p>
+			<p><code>eselect locale set NUMBER_OF_LOCALE</code></p>
+			<p>All you have to do now, is reload your environment with the new locale with the next command:</p>
+			<p><code>env-update &amp;&amp; source /etc/profile &amp;&amp; export PS1="(chroot) ${PS1}"</code></p>
+
+			<h3 id="grabbing-the-kernel-sources">Grabbing the Kernel Sources</h3>
+			<p>This is phase is based on the kernel compilation and installation, this can be saw has one of the most difficult steps as a Linux user, but once you overcome this step, you’ll see that it ain’t so hard to compile and customize 1. Grab the sources with <code>emerge --ask sys-kernel/gentoo-sources sys-kernel/genkernel</code> - If you need proprietary blobs also type <code>emerge --ask sys-kernel/linux-firmware</code></p>		<p>From here and now on, you have two options</p>
+			<ol type="1">
+				<li>Configure manually the kernel(Recommended);</li>
+				<li>Generate a default <strong>Gentoo</strong> kernel with genkernel (Not recommended because, once you update your kernel, you’ll have to recompile the kernel with all the modules and quirks, while if you manually configure a kernel, you’ll have a faster and faster to compile kernel).</li>
+			</ol>
+
+			<h3 id="compiling-the-kernel">Compiling the kernel</h3>
+
+			<h4 id="manually-configure-the-kernel">Manually Configure the kernel</h4>
+			<p><strong>Warning</strong>: you might also need to make some changes to the kernel to suit better your system, these options below are just some base kernel functions.</p>
+			<ol type="1">
+				<li>Go to the kernel sources directory with <code>cd /usr/src/linux</code>;</li>
+				<li>Now you are going to open a ncurses based kernel configuration menu with <code>make menuconfig</code>, where you can toggle on a option with <em>Y</em>, or toggle off a option with <em>N</em> or simply make the options modules(By default once the kernel boots up they are off, but you can turn them on with <code>modprobe DESIRED_MODULE_TO_TOGGLE_ON</code> command) with <em>M</em>.</li>
+			</ol>
+
+			<h5 id="activating-required-options">Activating required options</h5>
+			<p>Make sure that every driver that is vital to the booting of the system (such as SCSI controller, etc.) is compiled in the kernel and not as a module, otherwise the system will not be able to boot completely.</p>
+
+			<h6 id="enabling-devtmpfs-support">Enabling devtmpfs support</h6>
+			<pre><code>Device Drivers ---&gt;
+  Generic Driver Options ---&gt;
+    [*] Maintain a devtmpfs filesystem to mount at /dev
+    [*]   Automount devtmpfs at /dev, after the kernel mounted the rootfs</code></pre>
+
+			<h6 id="enabling-scsi-disk-support">Enabling SCSI disk support</h6>
+			<pre><code>Device Drivers ---&gt;
+   SCSI device support  ---&gt;
+      &lt;*&gt; SCSI disk support</code></pre>
+
+			<h6 id="selecting-necessary-file-systems">Selecting necessary file systems</h6>
+			<p>Now go to File Systems and select support for the file systems you use. Don’t compile the file system that is used for the root file system as module, otherwise the <strong>Gentoo</strong> system will not be able to mount the partition. Also select Virtual memory and /proc file system. Select one or more of the following options as needed by the system.</p>
+			<pre><code>File systems ---&gt;
+  &lt;*&gt; Second extended fs support
+  &lt;*&gt; The Extended 3 (ext3) filesystem
+  &lt;*&gt; The Extended 4 (ext4) filesystem
+  &lt;*&gt; Reiserfs support
+  &lt;*&gt; JFS filesystem support
+  &lt;*&gt; XFS filesystem support
+  &lt;*&gt; Btrfs filesystem support
+  DOS/FAT/NT Filesystems  ---&gt;
+    &lt;*&gt; MSDOS fs support
+    &lt;*&gt; VFAT (Windows-95) fs support
+
+Pseudo Filesystems ---&gt;
+    [*] /proc file system support
+    [*] Tmpfs virtual memory file system support (former shm fs)</code></pre>
+
+			<h6 id="selecting-pppoe-necessary-drivers">Selecting PPPoE necessary drivers</h6>
+			<p>If PPPoE is used to connect to the Internet, or a dial-up modem, then enable the following options</p>
+			<pre><code>Device Drivers ---&gt;
+  Network device support ---&gt;
+    &lt;*&gt; PPP (point-to-point protocol) support
+    &lt;*&gt;   PPP support for async serial ports
+    &lt;*&gt;   PPP support for sync tty ports</code></pre>
+
+			<h6 id="activating-smp-support">Activating SMP support</h6>
+			<pre><code>Processor type and features  ---&gt;
+  [*] Symmetric multi-processing support</code></pre>
+
+			<h6 id="activating-usb-support-for-input-devices">Activating USB support for input devices</h6>
+			<pre><code>Device Drivers ---&gt;
+  HID support  ---&gt;
+    -*- HID bus support
+    &lt;*&gt;   Generic HID driver
+    [*]   Battery level reporting for HID devices
+      USB HID support  ---&gt;
+	&lt;*&gt; USB HID transport layer
+  [*] USB support  ---&gt;
+    &lt;*&gt;     xHCI HCD (USB 3.0) support
+    &lt;*&gt;     EHCI HCD (USB 2.0) support
+    &lt;*&gt;     OHCI HCD (USB 1.1) support</code></pre>
+			<h6 id="selecting-processor-types-and-features">Selecting processor types and features</h6>
+			<p>Make sure to select IA32 Emulation if 32-bit programs should be supported.</p>
+			<pre><code>Processor type and features  ---&gt;
+   [ ] Machine Check / overheating reporting
+   [ ]   Intel MCE Features
+   [ ]   AMD MCE Features
+   Processor family (AMD-Opteron/Athlon64)  ---&gt;
+      ( ) Opteron/Athlon64/Hammer/K8
+      ( ) Intel P4 / older Netburst based Xeon
+      ( ) Core 2/newer Xeon
+      ( ) Intel Atom
+      ( ) Generic-x86-64
+Executable file formats / Emulations  ---&gt;
+   [*] IA32 Emulation</code></pre>
+
+			<h6 id="enable-support-for-gpt">Enable support for GPT</h6>
+			<p>Enable GPT partition label support if that was used previously when partitioning the disk</p>
+			<pre><code>-*- Enable the block layer ---&gt;
+   Partition Types ---&gt;
+      [*] Advanced partition selection
+      [*] EFI GUID Partition support</code></pre>
+
+			<h6 id="enable-support-for-uefi">Enable support for UEFI</h6>
+			<p>Enable EFI stub support and EFI variables in the Linux kernel if UEFI is used to boot the system</p>
+			<pre><code>Processor type and features  ---&gt;
+    [*] EFI runtime service support
+    [*]   EFI stub support
+    [*]     EFI mixed-mode support
+
+Firmware Drivers  ---&gt;
+    EFI (Extensible Firmware Interface) Support  ---&gt;
+	&lt;*&gt; EFI Variable Support via sysfs</code></pre>
+
+			<h6 id="kernel-extras">Kernel Extras</h6>
+			<ul>
+				<li><a href="https://wiki.gentoo.org/wiki/ALSA">ALSA</a>;</li>
+				<li><a href="https://wiki.gentoo.org/wiki/AMDGPU">AMD GPU</a>;</li>
+				<li><a href="https://wiki.gentoo.org/wiki/Android_USB_Tethering">Android USB Tethering</a>;</li>
+				<li><a href="https://wiki.gentoo.org/wiki/Dm-crypt">Dm-crypt</a>;</li>
+				<li><a href="https://wiki.gentoo.org/wiki/Iwlwifi">Intel WiFi Drivers</a>;</li>
+				<li><a href="http://www.users.on.net/~ckolivas/kernel/">Intel CPU Performance Improved Performance
+						Patch</a>;</li>
+				<li><a href="https://forums.gentoo.org/viewtopic-p-8352868.html">MMC</a> -
+					<code>Device Drivers-&gt;MMC/SD/SDIO card support-&gt;Secure Digital Host Controller Interface support-&gt;SDHCI support on PCI bus</code>;
+				</li>
+				<li><a href="https://wiki.gentoo.org/wiki/NVIDIA/nvidia-drivers">Nvidia GPU</a>;</li>
+				<li><a href="https://wiki.gentoo.org/wiki/OpenVPN">OpenVPN</a>;</li>
+				<li><a href="https://wiki.gentoo.org/wiki/Printing">Printing</a>;</li>
+				<li><a href="https://wiki.gentoo.org/wiki/PulseAudio">Pulseaudio</a>;</li>
+				<li><a href="https://wiki.gentoo.org/wiki/QEMU">QEMU</a>;</li>
+				<li><a href="https://wiki.gentoo.org/wiki/VirtualBox">VirtualBox</a>.</li>
+			</ul>
+			<p>From here, your system configurations may vary consonant your system, take a “trip” through the kernel menus and enable/disable the options that better suit you.</p>
+
+			<h6 id="compiling-and-installing-the-kernel">Compiling and Installing the kernel</h6>
+			<p>Now that your kernel is configured, it’s time to compile it, type <code>make &amp;&amp; make modules_install</code> to compile the kernel.</p>
+			<p>Now to install the kernel type <code>make install</code>. Finally you should generate initramfs of your kernel, so to do that, just type <code>genkernel --install initramfs</code>.</p>
+
+			<h6 id="note">Note</h6>
+			<p>You can then save your kernel configuration file (The file name <code>.config</code> inside your <code>/usr/src/linux/ directory</code>) wherever you want so if you need to recompile or reinstall the <strong>Gentoo</strong> kernel you just need to put the kernel configuration file inside of <code>/usr/src/linux/</code>.</p>
+
+			<h5 id="using-genkernel">Using Genkernel</h5>
+			<p>If a manual configuration looks too daunting, then using genkernel is recommended. It will configure and build the kernel automatically. Just type <code>genkernel all</code> to generate the kernel.</p>
+
+			<h3 id="creating-a-fstab-file">Creating a fstab file</h3>
+			<p>The /etc/fstab file uses a table-like syntax. Every line consists of six fields, separated by whitespace (space(s), tabs or a mixture). Each field has its own meaning:</p>
+			<p>The first field shows the block special device or remote file system to be mounted. Several kinds of device identifiers are available for block special device nodes, including paths to device files, file system labels and UUIDs, and partition labels and UUIDs. The second field shows the mount point at which the partition should be mounted. The third field shows the file system used by the partition. The fourth field shows the mount options used by mount when it wants to mount the partition. As every file system has its own mount options, users are encouraged to read the mount man page (man mount) for a full listing. Multiple mount options are comma-separated. The fifth field is used by dump to determine if the partition needs to be dumped or not. This can generally be left as 0 (zero). The sixth field is used by fsck to determine the order in which file systems should be checked if the system wasn’t shut down properly. The root file system should have 1 while the rest should have 2 (or 0 if a file system check isn’t necessary).</p>
+			<p>To start writting a fstab file you can start by typing the next command</p>
+			<p><code>blkid &gt;&gt; /etc/fstab</code></p>
+			<p>It will read your disks UUIDs and put them inside of your fstab file. Then type <code>nano -w /etc/fstab</code> to open up your fstab file, and modify it to look something like this, but with your UUIDs:</p>
+			<pre><code># /dev/YOUR_SWAP_PARTITION_ID
+UUID=YOUR_SWAP_PARTITION_UUID       none            swap            sw              0 0
+
+# /dev/YOUR_ROOT_PARTITION_ID
+UUID=YOUR_ROOT_PARTITION_UUID       /               ext4            rw,relatime     0 1</code></pre>
+
+			<h3 id="networking-information">Networking Information</h3>
+
+			<h4 id="setting-up-host-name">Setting up Host name</h4>
+			<p>Type</p>
+			<p><code>nano -w /etc/conf.d/hostname</code></p>
+			<p>And then change the host name variable to your desired variable.</p>
+
+			<h4 id="starting-networking-at-boot">Starting Networking at Boot</h4>
+			<p>In this step, first you need to go into the <code>init.d</code> directory, so type</p>
+			<p><code>cd /etc/init.d</code></p>
+			<p>Then link your current interface to <code>net.lo</code></p>
+			<p><code>ln -s net.lo net.YOUR_INTERNET_INTERFACE</code></p>
+			<p>Then add this link to openrc boot with</p>
+			<p><code>rc-update add net.YOUR_INTERNET_INTERFACE default</code></p>
+
+			<h4 id="pcmcia">PCMCIA</h4>
+			<p>If you are using PCMCIA then type</p>
+			<p><code>emerge --ask --quiet sys-apps/pcmciautils</code></p>
+
+			<h3 id="system-configurations">System Configurations</h3>
+
+			<h4 id="root-password">Root password</h4>
+			<p>Change your root password by typing:</p>
+			<p><code>passwd</code></p>
+
+			<h4 id="creating-a-user">Creating a user</h4>
+			<p>Create a user by typing:</p>
+			<p><code>useradd -m -G wheel YOUR_DESIRED_USERNAME</code></p>
+			<p>Then create a password to that user by typing:</p>
+			<p><code>passwd YOUR_DESIRED_USERNAME</code></p>
+
+			<h4 id="boot-configuration">Boot configuration</h4>
+			<p><strong>Gentoo</strong> (at least when using OpenRC) uses /etc/rc.conf to configure the services, startup, and shutdown of a system. You should review most of these settings by typing</p>
+			<p><code>nano -w /etc/rc.conf</code></p>
+			<p>Now, you should change your <em>tty</em> keyboard layout inside of <code>/etc/conf.d/keymaps</code> with</p>
+			<p><code>nano -w /etc/conf.d/keymaps</code></p>
+			<p>If necessary change the hwclock with</p>
+			<p><code>nano -w /etc/conf.d/hwclock</code></p>
+
+			<h4 id="system-logger">System logger</h4>
+			<p>Some tools are missing from the stage3 archive because several packages provide the same functionality. It is recommended the <code>sysklogd</code> package, so to get it and put it to working type:</p>
+			<pre><code>emerge --quiet --ask app-admin/sysklogd
+rc-update add sysklogd default</code></pre>
+
+			<h4 id="cron-daemon">Cron daemon</h4>
+			<p>A cron daemon executes scheduled commands. It is very handy if some command needs to be executed regularly (for instance daily, weekly or monthly). To setup cronie, type:</p>
+			<pre><code>emerge --ask sys-process/cronie
+rc-update add cronie default
+crontab /etc/crontab</code></pre>
+
+			<h4 id="file-indexing">File indexing</h4>
+			<p>In order to index the file system to provide faster file location capabilities, install<code>mlocate</code> with</p>
+			<p><code>emerge --ask sys-apps/mlocate</code></p>
+
+			<h4 id="file-systems">File systems</h4>
+			<p>Depending on the file systems used, it is necessary to install the required file system utilities</p>
+			<table>
+				<thead>
+					<tr class="header">
+						<th style="text-align: left;">File system</th>
+						<th style="text-align: right;">Package</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="odd">
+						<td style="text-align: left;">Ext2, 3, and 4</td>
+						<td style="text-align: right;">sys-fs/e2fsprogs</td>
+					</tr>
+					<tr class="even">
+						<td style="text-align: left;">VFAT (FAT32, …)</td>
+						<td style="text-align: right;">sys-fs/dosfstools</td>
+					</tr>
+					<tr class="odd">
+						<td style="text-align: left;">NTFS</td>
+						<td style="text-align: right;">sys-fs/ntfs3g</td>
+					</tr>
+					<tr class="even">
+						<td style="text-align: left;">XFS</td>
+						<td style="text-align: right;">sys-fs/xfsprogs</td>
+					</tr>
+					<tr class="odd">
+						<td style="text-align: left;">ReiserFS</td>
+						<td style="text-align: right;">sys-fs/reiserfsprogs</td>
+					</tr>
+					<tr class="even">
+						<td style="text-align: left;">JFS</td>
+						<td style="text-align: right;">sys-fs/jfsutils</td>
+					</tr>
+					<tr class="odd">
+						<td style="text-align: left;">Btrfs</td>
+						<td style="text-align: right;">sys-fs/btrfs-progs</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>Install your desired file system packages with</p>
+			<p><code>emerge --ask --quiet YOUR_DESIRED_FILESYSTEM_PACKAGES</code></p>
+
+			<h4 id="networking-tools">Networking Tools</h4>
+			<p>In order for the system to automatically obtain an IP address for one or more network interface(s) using netifrc scripts, it is necessary to install a DHCP client, to install it type:</p>
+			<p><code>emerge --quiet --ask net-misc/dhcpcd</code></p>
+
+			<h4 id="optional-pppoe-client">OPTIONAL PPPoE client</h4>
+			<p>If PPP is used to connect to the internet, install the net-dialup/ppp package with</p>
+			<p><code>emerge --ask net-dialup/ppp</code></p>
+
+			<h4 id="optional-wireless-networking">OPTIONAL Wireless Networking</h4>
+			<p>If the system will be connecting to wireless networks, install the next packages with</p>
+			<p><code>emerge --ask net-wireless/iw net-wireless/wpa_supplicant</code></p>
+
+			<h4 id="installing-grub-boot-loader">Installing GRUB Boot loader</h4>
+			<p>Install the grub with the next command</p>
+			<p><code>emerge --ask --quiet sys-boot/grub:2</code></p>
+			<p>After installing grub, install the boot loader with</p>
+			<p><code>grub-install /dev/YOUR_DISC_ID</code></p>
+			<p>Then generate a grub configuration file with</p>
+			<p><code>grub-mkconfig -o /boot/grub/grub.cfg</code></p>
+
+			<h3 id="finalize-installation">Finalize installation</h3>
+			<p>Now to finalize the base initialize, exit chroot environment with</p>
+			<p><code>exit</code></p>
+			<p>Then unmount the pseudo file systems with</p>
+			<p><code>umount -l /mnt/gentoo/dev</code></p>
+			<p>And finally unmount your disk with</p>
+			<p><code>umount -R /mnt/gentoo</code></p>
+			<p>Now, reboot your system with the <code>reboot</code> command and enjoy your base system install.</p>
+		</div>
+		<div id="footer">
+			<div id="contact">
+				<p>Links: <a href="https://gitlab.com/rafa_99">Gitlab</a> | <a href="https://gitlab.com/rafa_99/rafa_99.gitlab.io.atom">RSS Feed</a></p>
+				<p>GPG: <a href="files/rafael.gpg">Public Key</a></p>
+				<p>License: <a href="https://www.gnu.org/licenses/gpl-3.0.txt">GPLv3</a></p>
+			</div>
+		</div>
+	</body>
+
+</html>
