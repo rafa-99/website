@@ -98,6 +98,33 @@
 
 			<h3>Finishing Installation</h3>
 			<p>Now that you have everything setup to run the VM, just hit <code>Finish</code> or <code>Begin Installation</code>.</p>
+
+			<h3>Extra: Shared Linux VM folder</h3>
+			<h4>Create a shared folder</h4>
+			<p>In order to use a shared folder between the host machine and the guest VM, you must first create a folder in your filesystem and `chmod 777` it.</p>
+			<pre><code>mkdir ~/KVM_Share</code></pre>
+
+			<h4>Adding the shared folder has a filesystem</h4>
+			<p>Now open virt-manager, got to your virtual machine and under the virtual hardware tab, click on `Add Hardware`, select filesystem and in the driver option, select the virtio-9p option.</p>
+			<p>In the source path you are going to put the complete path to the host machine shared folder and in the target path you should type where the filesystem should exist inside the guest VM.</p>
+			<p>For this instance we are going to set the source path to <code>~/KVM_Share</code> and the target path to <code>/shared</code>.</p>
+
+			<h4>Mounting the shared folder</h4>
+			<p>Boot your guest VM and create a folder anywhere in your filesystem where you will mount the shared folder to.</p>
+			<pre><code>mkdir ~/hostfiles</code></pre>
+			<p>Now, if you type: <code>sudo mount -t 9p -o trans=virtio /shared ~/hostfiles</code>, the shared folder will be mounted.</p>
+
+			<h4>Auto mount on startup</h4>
+			<p>Now if you want the guest VM to auto mount the shared folder everytime you boot it, you just have to add the following line to your guest VM <code>/etc/fstab</code> file:</p>
+			<p><code>/shared /home/user/hostfiles 9p trans=virtio,version=9p2000.L,rw 0 0</code></p>
+			<p><strong>WARNING!!! The mounted folder path must be an absolute path!</strong></p>
+
+			<h3>References:</h3>
+			<ul>
+				<li><a href="https://youtu.be/p1d_b_91YlU"><em>DistroTube</em> - Virt-Manager Is The Better Way To Manage VMs</a>;</li>
+				<li><a href="https://computingforgeeks.com/enable-tpm-on-kvm-and-install-windows/"><em>Öteyo, Klinsmann</em> at Computing for Geeks - How To Enable TPM 2.0 on KVM and install Windows 11</a>;</li>
+				<li><a href="https://ostechnix.com/setup-a-shared-folder-between-kvm-host-and-guest/"><em>Sk</em> at OSTECHNIX - Setup A Shared Folder Between KVM Host And Guest</a>.</li>
+			</ul>
 		</div>
 
 		<div id="footer">
