@@ -86,37 +86,12 @@ p
 	line-height: .5em;
 }
 
-.grid
+.clearList
 {
-	border-radius: 2em;
-	display: grid;
-	grid-template-columns: auto;
-	grid-auto-flow: column;
-	gap: 1em;
+	list-style-type: none;
 }
 
-.grid p.grid-icon, p.grid-text
+.inlineSvg
 {
-	text-align: center;
-}
-
-.grid a.grid-element:hover
-{
-	background-color: rgba(0, 0, 0, 0.3);
-	text-decoration: none;
-}
-
-.grid-element
-{
-	border-radius: 2em;
-}
-
-.grid-icon
-{
-	font-size: 4em;
-}
-
-.grid-text
-{
-	font-size: 2em;
+	height: 1em;
 }
