@@ -1,27 +1,41 @@
+"use client"
+
+import { useState } from "react";
 import "./globals.css";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
-  return (
-    <html lang="en">
-      <body className="flex h-screen">
-        {/* Sidebar */}
-        <aside className="sidebar">
-          <h1 className="text-xl font-bold">Rafael Marçalo</h1>
-          <nav className="mt-4 space-y-2 sidebar-nav">
-            <a href="/">🏠 Home</a>
-            <a href="/posts">📜 Posts</a>
-            <a href="/library">📚 Library</a>
-            <a href="/people">🗣️ People</a>
-            <a href="/web">🌎 Web</a>
-            <a href="/references">🗃️ References</a>
-            <a href="/search">🔍 SearXNG</a>
-            <a href="/donate">💰 Donate</a>
-          </nav>
-        </aside>
+	const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-        {/* Main Content */}
-        <main className="main-content">{children}</main>
-      </body>
-    </html>
-  );
+	const toggleSidebar = () => {
+		setIsSidebarCollapsed(prev => !prev);
+	};
+
+	return (
+		<html lang="en">
+			<body className="flex h-screen">
+				{/* Sidebar */}
+				<aside className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+					<button className="sidebar-toggle-btn" onClick={toggleSidebar} aria-label="Toggle Sidebar">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+						</svg>
+					</button>
+					<h1 className={`text-xl font-bold ${isSidebarCollapsed ? 'hidden' : ''}`}>John Doe</h1>
+					<nav className={`mt-4 space-y-2 sidebar-nav ${isSidebarCollapsed ? 'hidden' : ''}`}>
+						<a href="/">🏠 Home</a>
+						<a href="/posts">📜 Posts</a>
+						<a href="/library">📚 Library</a>
+						<a href="/people">🗣️ People</a>
+						<a href="/web">🌎 Web</a>
+						<a href="/references">🗃️ References</a>
+						<a href="/search">🔍 SearXNG</a>
+						<a href="/donate">💰 Donate</a>
+					</nav>
+				</aside>
+
+				{/* Main Content */}
+				<main className="main-content">{children}</main>
+			</body>
+		</html>
+	);
 }
