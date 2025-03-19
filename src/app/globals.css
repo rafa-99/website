@@ -1,26 +1,16 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Sidebar */
+.sidebar {
+  @apply w-48 bg-neutral-950 text-white p-5 shadow-lg shadow-black/50 z-0;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Sidebar Navigation */
+.sidebar-nav a {
+  @apply block py-2 px-3 rounded transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-neutral-700 hover:font-bold;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Main Content */
+.main-content {
+  @apply flex-1 bg-neutral-800 text-white p-6 overflow-auto;
 }
