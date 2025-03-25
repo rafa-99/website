@@ -36,8 +36,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 						<a href="/library">📚 Library</a>
 						<a href="/people">🗣️ People</a>
 						<a href="/web">🌎 Web</a>
-						<a href="/references">🗃️ References</a>
-						<a href="/search">🔍 SearXNG</a>
+						<a href="https://searxng.rafaelmarcalo.xyz/">🔍 SearXNG</a>
 						<a href="/donate">💰 Donate</a>
 					</nav>
 				</aside>

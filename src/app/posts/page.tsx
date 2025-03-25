@@ -53,21 +53,21 @@ const getFileEmoji = (filename) => {
 
 const removeExtension = (filename) => {
 	return path.basename(filename, path.extname(filename));
-  };
+};
 
 const formatData = (filename) => {
 	const match = filename.match(/^(\d{4})(\d{2})(\d{2})-(.*)$/);
-	
+
 	if (match) {
-	  const [_, year, month, day, cleanFilename] = match;
-	  const date = new Date(`${year}-${month}-${day}`);
-	  const formattedDate = date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
-	  const cleanFilenameWithoutExt = removeExtension(cleanFilename);
-	  return { formattedDate, cleanFilename: cleanFilenameWithoutExt };
+		const [_, year, month, day, cleanFilename] = match;
+		const date = new Date(`${year}-${month}-${day}`);
+		const formattedDate = date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+		const cleanFilenameWithoutExt = removeExtension(cleanFilename);
+		return { formattedDate, cleanFilename: cleanFilenameWithoutExt };
 	}
-	
+
 	return { formattedDate: null, cleanFilename: removeExtension(filename) };
-  };
+};
 
 const PostList = ({ title, filenames, pathPrefix }) => (
 	<div className="bg-neutral-950 p-8 rounded-2xl shadow-lg max-w-1/2 w-full">
@@ -77,7 +77,7 @@ const PostList = ({ title, filenames, pathPrefix }) => (
 				const { formattedDate, cleanFilename } = formatData(filename);
 				return (
 					<li key={filename} className="list-item">
-						<a href={`/posts/${pathPrefix}/${filename}`} target="_blank">
+						<a href={`/posts/${pathPrefix}/${filename}`} target="_blank"  rel="noopener noreferrer">
 							<div className="flex items-center gap-2">
 								{formattedDate && (
 									<span className="text-sm text-neutral-400">({formattedDate})</span>

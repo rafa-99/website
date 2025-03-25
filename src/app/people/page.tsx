@@ -1,4 +1,4 @@
-export default function PeoplePage() {
+export default function People() {
 	const people = [
 		{ name: "Ashwin Nanjappa", url: "https://codeyarns.com/" },
 		{ name: "Bryce Vandegrift", url: "https://brycevandegrift.xyz/" },
@@ -7,7 +7,7 @@ export default function PeoplePage() {
 		{ name: "Drew DeVault's blog", url: "https://drewdevault.com/" },
 		{ name: "Eric Murphy", url: "https://ericmurphy.xyz/" },
 		{ name: "Gentoomen", url: "https://g.sicp.me/" },
-		{ name: "Kris Occhipinti", url: "https://filmsbykris.com/"},
+		{ name: "Kris Occhipinti", url: "https://filmsbykris.com/" },
 		{ name: "Luke Smith", url: "https://lukesmith.xyz/" },
 		{ name: "Mental Outlaw", url: "https://www.youtube.com/c/MentalOutlaw/" },
 		{ name: "Michael Mob", url: "https://michaelmob.com/" },
