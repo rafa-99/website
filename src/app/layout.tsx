@@ -12,6 +12,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
 	return (
 		<html lang="en">
+			<head>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+				<meta name="description" content="Rafael Marçalo's website wrote with Next.JS" />
+				<meta name="author" content="Rafael Marçalo" />
+				<meta property="og:title" content="Rafael Marçalo" />
+				<link rel="manifest" href="/manifest.json" />
+				<title>Rafael Marçalo</title>
+			</head>
 			<body className="flex h-screen">
 				{/* Sidebar */}
 				<aside className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
@@ -20,7 +28,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 							<path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
 						</svg>
 					</button>
-					<h1 className={`text-xl font-bold ${isSidebarCollapsed ? 'hidden' : ''}`}>John Doe</h1>
+					<h1 className={`text-xl font-bold ${isSidebarCollapsed ? 'hidden' : ''}`}>Rafael Marçalo</h1>
 					<nav className={`mt-4 space-y-2 sidebar-nav ${isSidebarCollapsed ? 'hidden' : ''}`}>
 						<a href="/">🏠 Home</a>
 						<a href="/posts">📜 Posts</a>

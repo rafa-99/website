@@ -2,7 +2,7 @@
 
 /* Sidebar */
 .sidebar {
-  @apply w-48 bg-neutral-950 text-white p-5 transition-all duration-300 ease-in-out shadow-lg shadow-black/50 z-0;
+  @apply w-64 bg-neutral-950 text-white p-5 transition-all duration-300 ease-in-out shadow-lg shadow-black/50 z-0;
   position: relative;
 }
 
@@ -43,4 +43,9 @@
 /* Main Content */
 .main-content {
 	@apply flex-1 bg-neutral-800 text-white p-6 overflow-auto;
+}
+
+/* Post Items */
+.post-item {
+  @apply block py-2 px-3 rounded transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-neutral-700 hover:font-bold cursor-pointer;
 }
