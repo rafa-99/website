@@ -77,7 +77,7 @@ const PostList = ({ title, filenames, pathPrefix }) => (
 				const { formattedDate, cleanFilename } = formatData(filename);
 				return (
 					<li key={filename} className="list-item">
-						<a href={`/posts/${pathPrefix}/${filename}`} target="_blank"  rel="noopener noreferrer">
+						<a href={`/posts/${pathPrefix}/${filename}`} target="_blank" rel="noopener noreferrer">
 							<div className="flex items-center gap-2">
 								{formattedDate && (
 									<span className="text-sm text-neutral-400">({formattedDate})</span>
