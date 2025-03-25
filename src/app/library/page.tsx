@@ -17,8 +17,7 @@ export default function Library() {
 		{ title: "Mindless Statistics", author: "Gigerenzer, Greg" },
 		{ title: "Programming Notes for Professionals Books", author: "Various" },
 		{ title: "Simulacra and Simulation", author: "Baudrillard, Jean" },
-		{ title: "Structure and Interpretation of Computer Programs", author: "Abelson, Harold and Sussman, Geral Jay" },
-		{ title: "Technological Slavery", author: "Kaczynski, Theodore" },
+		{ title: "Structure and Interpretation of Computer Programs", author: "Abelson, Harold and Sussman, Geral Jay" }
 	];
 
 	const sortedBooks = books.sort((a, b) => a.title.localeCompare(b.title));

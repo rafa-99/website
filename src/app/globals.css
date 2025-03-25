@@ -37,7 +37,7 @@
 
 /* Sidebar Navigation */
 .sidebar-nav a {
-	@apply block py-2 px-3 rounded transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-neutral-700 hover:font-bold;
+	@apply block py-2 px-3 rounded transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-neutral-700 hover:font-bold;
 }
 
 /* Main Content */
@@ -46,6 +46,6 @@
 }
 
 /* Post Items */
-.post-item {
-  @apply block py-2 px-3 rounded transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-neutral-700 hover:font-bold cursor-pointer;
+.list-item {
+  @apply block py-2 px-3 rounded transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-neutral-700 hover:font-bold cursor-pointer;
 }

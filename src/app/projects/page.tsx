@@ -32,10 +32,10 @@ export default function Projects() {
 	return (
 		<div className="flex flex-col items-center justify-center space-y-12">
 			<div className="bg-neutral-950 p-8 rounded-2xl shadow-lg max-w-1/2 w-full">
-				<h1 className="text-2xl font-bold mb-4">GitHub Projects</h1>
+				<h1 className="text-2xl font-bold mb-4">GitHub Projects 🧪</h1>
 				<ul>
 					{repos.map((repo) => (
-						<li key={repo.id} className="post-item">
+						<li key={repo.id} className="list-item">
 							<a href={repo.html_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
 								{repo.name}
 								{repo.description && <span className="text-sm text-neutral-400">{repo.description}</span>}

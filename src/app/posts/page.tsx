@@ -76,7 +76,7 @@ const PostList = ({ title, filenames, pathPrefix }) => (
 			{filenames.map((filename) => {
 				const { formattedDate, cleanFilename } = formatData(filename);
 				return (
-					<li key={filename} className="post-item">
+					<li key={filename} className="list-item">
 						<a href={`/posts/${pathPrefix}/${filename}`} target="_blank">
 							<div className="flex items-center gap-2">
 								{formattedDate && (
@@ -102,8 +102,8 @@ export default async function Posts() {
 
 		return (
 			<div className="flex flex-col items-center justify-center space-y-12">
-				<PostList title="Latest Posts" filenames={latestFilenames} pathPrefix="current" />
-				<PostList title="Legacy Posts" filenames={legacyFilenames} pathPrefix="legacy" />
+				<PostList title="Latest Posts 📝" filenames={latestFilenames} pathPrefix="current" />
+				<PostList title="Legacy Posts 📜" filenames={legacyFilenames} pathPrefix="legacy" />
 			</div>
 		);
 	} catch (error) {

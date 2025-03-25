@@ -32,7 +32,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 					<nav className={`mt-4 space-y-2 sidebar-nav ${isSidebarCollapsed ? 'hidden' : ''}`}>
 						<a href="/">🏠 Home</a>
 						<a href="/projects">🧪 Projects</a>
-						<a href="/posts">📜 Posts</a>
+						<a href="/posts">📝 Posts</a>
 						<a href="/library">📚 Library</a>
 						<a href="/people">🗣️ People</a>
 						<a href="/web">🌎 Web</a>
