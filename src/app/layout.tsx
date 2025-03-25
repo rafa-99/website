@@ -31,6 +31,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 					<h1 className={`text-xl font-bold ${isSidebarCollapsed ? 'hidden' : ''}`}>Rafael Marçalo</h1>
 					<nav className={`mt-4 space-y-2 sidebar-nav ${isSidebarCollapsed ? 'hidden' : ''}`}>
 						<a href="/">🏠 Home</a>
+						<a href="/projects">🧪 Projects</a>
 						<a href="/posts">📜 Posts</a>
 						<a href="/library">📚 Library</a>
 						<a href="/people">🗣️ People</a>
