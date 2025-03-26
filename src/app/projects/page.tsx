@@ -1,5 +1,13 @@
 "use client"
+import Link from "next/link";
 import { useEffect, useState } from "react";
+
+type Repo = {
+	id: number;
+	name: string;
+	html_url: string;
+	description?: string;
+};
 
 const GITHUB_USERNAME = "rafa-99";
 
@@ -10,7 +18,7 @@ const fetchRepos = async () => {
 };
 
 export default function Projects() {
-	const [repos, setRepos] = useState<any[]>([]);
+	const [repos, setRepos] = useState<Repo[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
@@ -36,10 +44,10 @@ export default function Projects() {
 				<ul>
 					{repos.map((repo) => (
 						<li key={repo.id} className="list-item">
-							<a href={repo.html_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+							<Link href={repo.html_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
 								{repo.name}
 								{repo.description && <span className="text-sm text-neutral-400">{repo.description}</span>}
-							</a>
+							</Link>
 						</li>
 					))}
 				</ul>

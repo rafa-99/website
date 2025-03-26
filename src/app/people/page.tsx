@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function People() {
 	const people = [
 		{ name: "Ashwin Nanjappa", url: "https://codeyarns.com/" },
@@ -24,10 +26,10 @@ export default function People() {
 				<ul>
 					{people.map((person, index) => (
 						<li key={index} className="list-item">
-							<a href={person.url} target="_blank" rel="noopener noreferrer" className="flex flex-col">
+							<Link href={person.url} target="_blank" rel="noopener noreferrer" className="flex flex-col">
 								<span className="text-lg font-semibold">{person.name}</span>
 								<span className="text-sm text-neutral-400">{person.url}</span>
-							</a>
+							</Link>
 						</li>
 					))}
 				</ul>

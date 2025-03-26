@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react";
+import Link from 'next/link';
 import "./globals.css";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
@@ -13,7 +14,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 	return (
 		<html lang="en">
 			<head>
-				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<meta name="description" content="Rafael Marçalo's website wrote with Next.JS" />
 				<meta name="author" content="Rafael Marçalo" />
 				<meta property="og:title" content="Rafael Marçalo" />
@@ -30,14 +31,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 					</button>
 					<h1 className={`text-xl font-bold ${isSidebarCollapsed ? 'hidden' : ''}`}>Rafael Marçalo</h1>
 					<nav className={`mt-4 space-y-2 sidebar-nav ${isSidebarCollapsed ? 'hidden' : ''}`}>
-						<a href="/">🏠 Home</a>
-						<a href="/projects">🧪 Projects</a>
-						<a href="/posts">📝 Posts</a>
-						<a href="/library">📚 Library</a>
-						<a href="/people">🗣️ People</a>
-						<a href="/web">🌎 Web</a>
-						<a href="https://searxng.rafaelmarcalo.xyz/">🔍 SearXNG</a>
-						<a href="/donate">💰 Donate</a>
+						<Link href="/">🏠 Home</Link>
+						<Link href="/projects">🧪 Projects</Link>
+						<Link href="/posts">📝 Posts</Link>
+						<Link href="/library">📚 Library</Link>
+						<Link href="/people">🗣️ People</Link>
+						<Link href="/web">🌎 Web</Link>
+						<Link href="https://searxng.rafaelmarcalo.xyz/">🔍 SearXNG</Link>
+						<Link href="/donate">💰 Donate</Link>
 					</nav>
 				</aside>
 

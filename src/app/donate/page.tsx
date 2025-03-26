@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Donate() {
 	const wallets = [
 		{
@@ -26,7 +28,7 @@ export default function Donate() {
 					{wallets.map((wallet, index) => (
 						<div key={index} className="bg-neutral-800 p-4 rounded-lg shadow-lg flex flex-col items-center">
 							<h2 className="text-xl font-semibold">{wallet.name}</h2>
-							<img src={wallet.qr} alt={`${wallet.name} QR Code`} className="w-32 h-32 my-4" />
+							<Image src={wallet.qr} alt={`${wallet.name} QR Code`} width={145} height={145} className="my-4 object-contain" />
 							<p className="text-sm text-neutral-400 break-all">{wallet.address}</p>
 						</div>
 					))}

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Web() {
 	const web = [
 		{ name: "Android AARCH64 Compiling Toolchain", url: "https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9" },
@@ -25,10 +27,10 @@ export default function Web() {
 				<ul>
 					{web.map((page, index) => (
 						<li key={index} className="list-item">
-							<a href={page.url} target="_blank" rel="noopener noreferrer" className="flex flex-col">
+							<Link href={page.url} target="_blank" rel="noopener noreferrer" className="flex flex-col">
 								<span className="text-lg font-semibold">{page.name}</span>
 								<span className="text-sm text-neutral-400">{page.url}</span>
-							</a>
+							</Link>
 						</li>
 					))}
 				</ul>

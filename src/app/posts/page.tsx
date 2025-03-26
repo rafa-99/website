@@ -1,7 +1,14 @@
 import fs from "fs/promises";
+import Link from "next/link";
 import path from "path";
 
-const getFileEmoji = (filename) => {
+type PostListProps = {
+	title: string;
+	filenames: string[];
+	pathPrefix: string;
+};
+
+const getFileEmoji = (filename: string) => {
 	const ext = path.extname(filename).toLowerCase();
 
 	switch (ext) {
@@ -51,15 +58,15 @@ const getFileEmoji = (filename) => {
 	}
 };
 
-const removeExtension = (filename) => {
+const removeExtension = (filename: string) => {
 	return path.basename(filename, path.extname(filename));
 };
 
-const formatData = (filename) => {
+const formatData = (filename: string) => {
 	const match = filename.match(/^(\d{4})(\d{2})(\d{2})-(.*)$/);
 
 	if (match) {
-		const [_, year, month, day, cleanFilename] = match;
+		const [, year, month, day, cleanFilename] = match;
 		const date = new Date(`${year}-${month}-${day}`);
 		const formattedDate = date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
 		const cleanFilenameWithoutExt = removeExtension(cleanFilename);
@@ -69,22 +76,22 @@ const formatData = (filename) => {
 	return { formattedDate: null, cleanFilename: removeExtension(filename) };
 };
 
-const PostList = ({ title, filenames, pathPrefix }) => (
+const PostList = ({ title, filenames, pathPrefix }: PostListProps) => (
 	<div className="bg-neutral-950 p-8 rounded-2xl shadow-lg max-w-1/2 w-full">
 		<h1 className="text-2xl font-bold mb-4">{title}</h1>
 		<ul className="flex flex-col-reverse">
-			{filenames.map((filename) => {
+			{filenames.map((filename: string) => {
 				const { formattedDate, cleanFilename } = formatData(filename);
 				return (
 					<li key={filename} className="list-item">
-						<a href={`/posts/${pathPrefix}/${filename}`} target="_blank" rel="noopener noreferrer">
+						<Link href={`/posts/${pathPrefix}/${filename}`} target="_blank" rel="noopener noreferrer">
 							<div className="flex items-center gap-2">
 								{formattedDate && (
 									<span className="text-sm text-neutral-400">({formattedDate})</span>
 								)}
 								{getFileEmoji(filename)} {cleanFilename}
 							</div>
-						</a>
+						</Link>
 					</li>
 				);
 			})}
