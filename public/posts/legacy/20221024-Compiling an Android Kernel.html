@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="author" content="Rafael Marçalo">
+		<meta name="description" content="Compiling an Android Kernel">
+		<title>Compiling an Android Kernel</title>
+	</head>
+	<body>
+		<div id="content">
+			<h2>Compiling an Android Kernel</h2>
+			<p>In this tutorial I'm going I recommend any Debian/Ubuntu based distribution due to the extensive availability of the clang package versions, for this instance to be using Linux Mint. As for the android phone I'm going to be using a Xiaomi Redmi Note 9 (merlin) while running the crDroid custom rom.</p>
+
+			<h3>What is the Android Kernel</h3>
+			<p><em>"The Android kernel is based on an upstream Linux Long Term Supported (LTS) kernel. At Google, LTS kernels are combined with Android-specific patches to form what are known as Android Common Kernels (ACKs)."</em> - <a href="https://source.android.com/docs/core/architecture/kernel">Android Open Source Project</a></p>
+
+			<h3>First steps: Prepping the environment</h3>
+			<p>In order to customize and compile your own kernel, you must first meet a couple requirements:</p>
+
+			<ul>
+				<li>Owning an Android device;</li>
+				<li>Your device must be rooted;</li>
+				<li>Available kernel source code (for modification/compilation);</li>
+				<li>Have a linux machine or virtual machine.</li>
+			</ul>
+
+			<h4>Installing dependencies</h4>
+			<p>If you have a Debian/Ubuntu based distribution, you must install the below packages:</p>
+			<pre><code>sudo apt install git ccache automake lzop bison gperf build-essential zip curl zlib1g-dev zlib1g-dev:i386 g++-multilib python-networkx libxml2-utils bzip2 libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools pngcrush schedtool dpkg-dev liblz4-tool make optipng libssl-dev clang</code></pre>
+
+			<p>If you have a Arch based distribution, you must install the below packages:</p>
+			<pre><code>sudo pacman -S base-devel git clang</code></pre>
+
+			<p><strong>WARNING</strong>: Depending on the kernel you are compiling you might need use a different version of clang according to your device. Most of the current kernels don't yet support the clang current compiler so in this instance I'm going to be using clang-13 available as a package named <code>clang-13</code>.</p>
+
+			<h4>Prepping the folders (Optional, but convenient if using the helper script below)</h4>
+			<p>I recommend creating a empty folder where all the operations will handled within itself.</p>
+
+			<h3>Grabbing the Sources</h3>
+			<h4>Kernel Source Code</h4>
+			<p>In this stage we are going to clone the kernel source code according to my device and OS, in this case, for the crDroid Xiaomi Redmi Note 9 running official crDroid, the kernel is located over at <a href="https://github.com/crdroidandroid/android_kernel_xiaomi_mt6768">https://github.com/crdroidandroid/android_kernel_xiaomi_mt6768</a>. If you intend to use the helper script below I recommend cloning your kernel source code into the recently created folder, otherwise, just clone the source code anywhere you want.</p>
+
+			<p>We can clone the kernel using <code>git clone https://github.com/crdroidandroid/android_kernel_xiaomi_mt6768</code> command.</p>
+
+			<p>After cloning, proceed to change directory into the cloned kernel source code.</p>
+
+			<h4>Compiler and Toolchains  (Skippable if using helper script)</h4>
+			<p>In todays android devices, in order to compile the kernel source code, you need multiple toolchains(the android arm64, and the arm compiling toolchains respectively), and you also need a C/ASM compiler, in this instance, we are going to be using the most used compiler, the clang compiler.</p>
+
+			<p>Both of these toolchains I usually tend to get them from the LineageOS source tree:</p>
+
+			<ul>
+				<li><a href="https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9">ARM Toolchain</a></li>
+				<li><a href="https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9">ARM64 Toolchain</a></li>
+			</ul>
+
+			<p>If you are using the helper script you don't need to clone them, the script already does that and adds them to your <code>PATH</code> variable, otherwise, do these things yourself.</p>
+
+			<h3>Compilation Process</h3>
+			<p>The compilation is tha last stage of the entire process, this stage is divided in 3 phases, the selection of a default kernel configuration, the modification of this configuration and the kernel compilation process.</p>
+
+			<h4>Finding the default configuration</h4>
+			<p>Under the kernel source repository we just cloned, you can follow one of the next paths to your default configuration according to your cpu architecture:</p>
+
+			<p><code>arch/arm64/configs</code> or <code>arch/arm/configs</code></p>
+
+			<p>Under one of these folders you should find your device default kernel configuration file, it'll be probably have a name like <code>DEVICECODENAME_defconfig</code>.</p>
+
+			<p>Ex: <code>merlin_defconfig</code></p>
+
+			<p>After finding this configuration file, take note of the file name, it's very important for later use.</p>
+
+			<h3>Modifying the Default Configuration (Skippable if using helper script)</h3>
+
+			<p>In order to customize your kernel configurations you must first prepare the kernel modification/compilation environment. To achieve this, we can type the next commands:</p>
+
+			<pre><code>mkdir -p modout</code></pre>
+
+			<p>In the below command you must replace the PREVIOUSLYSTATEDFILENAME with the file name stated previously.</p>
+
+			<pre><code>make ARCH=arm64 \
+	CC=clang-13 \
+	CLANG_TRIPLE=aarch64-linux-gnu- \
+	CROSS_COMPILE=aarch64-linux-android- \
+	CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+	PREVIOUSLYSTATEDFILENAME</code></pre>
+
+			<p>Example:</p>
+
+			<pre><code>make ARCH=arm64 \
+	CC=clang-13 \
+	CLANG_TRIPLE=aarch64-linux-gnu- \
+	CROSS_COMPILE=aarch64-linux-android- \
+	CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+	merlin_defconfig</code></pre>
+
+			<p>After this, you environment will be prepared and you current configuration will be saved in a file <code>.config</code> which you can either edit manually with your favourite text editor or you can type in the next command in order to edit the configurations with a ncurses based menu:</p>
+
+			<pre><code>make ARCH=arm64 \
+	CC=clang-13 \
+	CLANG_TRIPLE=aarch64-linux-gnu- \
+	CROSS_COMPILE=aarch64-linux-android- \
+	CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+	menuconfig</code></pre>
+
+			<p>Inside of this menu you will have the option to allow some kernel functionalities with <code>Y</code>, disable the functionalities with <code>N</code> and modularize them with <code>M</code>.</p>
+
+			<p><strong>WARNING</strong>: Some of this functionalities may break during the kernel compilation process.</p>
+
+			<h3>Compiling the kernel (Skippable if using helper script)</h3>
+
+			<p>After setting up the kernel configuration, the file <code>.config</code> will be changed after you click the <code>SAVE</code> button. To start compiling the kernel type in the next command:</p>
+
+			<pre><code>make -jNUMBEROFCORES ARCH=arm64 \
+			CC=clang \
+			CLANG_TRIPLE=aarch64-linux-gnu- \
+			CROSS_COMPILE=aarch64-linux-android- \
+			CROSS_COMPILE_ARM32=arm-linux-androideabi-</code></pre>
+
+			<p>If the kernel fails to compile, it's either a problem related to the kernel code you have to fix or either a clang version incompatibility. If the kernel manages to compile sucessfully you must now generate the kernel modules with the command:</p>
+
+			<pre><code>make ARCH=arm64 \
+	CC=clang-13 \
+	CLANG_TRIPLE=aarch64-linux-gnu- \
+	CROSS_COMPILE=aarch64-linux-android- \
+	CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+	INSTALL_MOD_PATH="modout" \
+	INSTALL_MOD_STRIP=1 \
+	modules_install</code></pre>
+
+			<h3>Using the compile script instead of manual setup</h3>
+			<p>If you decided to use a compile script to setup the environment and compile the kernel, then, just after grabbing the kernel sources, at the root level of the kernel source code create a shell script with any name you want and paste the below code inside of it:</p>
+
+			<pre><code>#!/bin/sh
+
+# Defining Vars
+COMPILERS_DIR=$(cd .. && pwd)
+COMPILER="https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9"
+COMPILER32="https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9"
+DEFCONFIG="DEVICECODENAME_defconfig"
+KERNEL_DIR=$(pwd)
+PATH="${COMPILERS_DIR}/gcc/bin:${COMPILERS_DIR}/gcc32/bin:${PATH}"
+
+# Grabbing Compilers
+cd "$COMPILERS_DIR" || exit
+git clone "$COMPILER" gcc
+git clone "$COMPILER32" gcc32
+cd "$KERNEL_DIR" || exit
+
+# Compiling Kernel
+mkdir -p build/modout
+make O=build ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi- "$DEFCONFIG"
+make O=build ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi- menuconfig
+make -jNUMBEROFCORES O=build ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi-
+make O=build ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi- INSTALL_MOD_PATH="modout" INSTALL_MOD_STRIP=1 modules_install</code></pre>
+
+			<p>After saving the script, change the field with DEVICECODENAME a codename present inside of the folder <code>arch/arm64/configs</code> or the folder <code>arch/arm/configs</code>, and change the field where it says NUMBEROFCORES to the number of cores you want to allocate for compilation.</p>
+
+			<p><strong>WARNING</strong>: You might need to change the <code>CC</code> variable to <code>clang-13</code> if you're not compiling with the clang default compiler version.</p>
+
+			<p>Now just run the script and make the necessary changes to the kernel. After that, the script will automatically start compiling and the kernel image and modules will be built inside a build folder in the root of the kernel sources.</p>
+
+			<h3>Finding the kernel image and modules</h3>
+
+			<p>After generating the kernel modules, you'll have them available inside the folder <code>modout</code>, and the kernel image will be compile inside the folder <code>arch/arm64/boot</code>.</p>
+
+			<h3>Commands recap using the compile script in Linux Mint</h3>
+			<ol>
+				<li><code>sudo apt install git ccache automake lzop bison gperf build-essential zip curl zlib1g-dev zlib1g-dev:i386 g++-multilib python-networkx libxml2-utils bzip2 libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools pngcrush schedtool dpkg-dev liblz4-tool make optipng libssl-dev clang</code></li>
+				<li><code>mkdir kernel</code></li>
+				<li><code>cd kernel</code></li>
+				<li><code>git clone https://github.com/crdroidandroid/android_kernel_xiaomi_mt6768</code></li>
+				<li><code>cd android_kernel_xiaomi_mt6768</code></li>
+				<li><em>*Put the script inside the kernel source root folder*</em></li>
+				<li><em>*Edit the script according to your device and your computer cores*</em></li>
+				<li><em>*Run the script*</em></li>
+				<li>Done</li>
+			</ol>
+
+			<h2>References</h2>
+			<ul>
+				<li><a href="https://forum.xda-developers.com/t/guide-how-to-build-a-samsung-kernel-july-30-2016.3429355/"><em>The Sickness</em> at XDA-Developers - [GUIDE] How to build a Samsung Kernel July 30, 2016</a>.</li>
+			</ul>
+		</div>
+	</body>
+</html>

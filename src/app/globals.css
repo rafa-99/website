@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+/* Sidebar */
+.sidebar {
+  @apply w-64 bg-neutral-950 text-white p-5 transition-all duration-300 ease-in-out shadow-lg shadow-black/50 z-0;
+  position: relative;
+}
+
+/* Collapsed Sidebar */
+.sidebar.collapsed {
+  @apply w-15; /* Reduced width when collapsed */
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle-btn {
+  @apply absolute top-5 right-5 text-white bg-transparent border-none text-xl cursor-pointer;
+}
+
+/* Sidebar Content (hide when collapsed) */
+.sidebar h1,
+.sidebar-nav {
+  transition: opacity 0.3s ease;
+}
+
+/* Hide content when collapsed */
+.sidebar.collapsed h1,
+.sidebar.collapsed .sidebar-nav {
+  opacity: 0;
+  visibility: hidden; /* Ensures the content is hidden when collapsed */
+}
+
+/* Optional: Add some styling when the sidebar is collapsed to make it look cleaner */
+.sidebar.collapsed .sidebar-toggle-btn {
+  transform: rotate(180deg); /* Rotate button when collapsed */
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav a {
+	@apply block py-2 px-3 rounded transition hover:scale-110 hover:bg-neutral-700 hover:font-bold;
+}
+
+/* Main Content */
+.main-content {
+	@apply flex-1 bg-neutral-800 text-white p-6 overflow-auto;
+}
+
+/* List Items */
+.list-item {
+  @apply block py-2 px-3 rounded transition hover:scale-105 hover:bg-neutral-700 cursor-pointer;
+}
+
+/* Strong text */
+strong {
+  @apply text-white
+}
