@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to CSS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .example {
+            background-color: white;
+            padding: 10px;
+            border-left: 5px solid #4CAF50;
+            margin: 10px 0;
+        }
+
+        .code {
+            background-color: #eee;
+            padding: 10px;
+            font-family: monospace;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+
+        .box {
+            width: 200px;
+            height: 100px;
+            background-color: lightblue;
+            border: 2px solid #333;
+            text-align: center;
+            line-height: 100px;
+            margin: 10px 0;
+        }
+
+        .rounded {
+            border-radius: 15px;
+        }
+
+        .shadow {
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .color-example {
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .text-color {
+            color: red;
+        }
+
+        .background-color {
+            background-color: yellow;
+        }
+
+        .border-color {
+            border: 2px solid blue;
+        }
+
+        .gradient {
+            background: linear-gradient(to right, red, orange);
+            color: white;
+        }
+
+        .text-transform {
+            text-transform: uppercase;
+        }
+
+        .text-align {
+            text-align: center;
+        }
+
+        .letter-spacing {
+            letter-spacing: 3px;
+        }
+
+        .word-spacing {
+            word-spacing: 10px;
+        }
+
+        .line-height {
+            line-height: 2;
+        }
+
+        .font-family {
+            font-family: "Times New Roman";
+        }
+
+        .border-table {
+            border: 2px solid black;
+            border-collapse: collapse;
+        }
+
+        .border-table th,
+        .border-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .header-table th {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+        }
+
+        .header-table td {
+            text-align: center;
+        }
+
+        .alternate-rows tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .alternate-rows td {
+            padding: 8px;
+        }
+
+        .hover-effect tr:hover {
+            background-color: #ddd;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        .responsive-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .responsive-table th,
+        .responsive-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .size-example {
+            background-color: lightgray;
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .width-example {
+            width: 50%;
+            background-color: lightgreen;
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .height-example {
+            height: 150px;
+            background-color: lightcoral;
+            text-align: center;
+            line-height: 150px;
+            margin: 10px 0;
+        }
+
+        .padding-example {
+            padding: 30px;
+            background-color: lightyellow;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .margin-example {
+            margin: 30px;
+            background-color: lightblue;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Introduction to CSS</h1>
+    <p>CSS (Cascading Style Sheets) is used to style HTML elements.</p>
+
+    <h2>Types of CSS</h2>
+    <div class="example">
+        <h3>Inline CSS</h3>
+        <p style="color: blue; font-weight: bold;">This paragraph is styled using inline CSS.</p>
+        <div class="code">&lt;p style="color: blue; font-weight: bold;"&gt;This paragraph is styled using inline
+            CSS.&lt;/p&gt;</div>
+    </div>
+
+    <div class="example">
+        <h3>Internal CSS</h3>
+        <p>This section is styled using internal CSS within the &lt;style&gt; tag.</p>
+        <div class="code">&lt;style&gt;
+            p {
+            color: green;
+            }
+            &lt;/style&gt;</div>
+    </div>
+
+    <div class="example">
+        <h3>External CSS</h3>
+        <p>External CSS is written in a separate file and linked to HTML.</p>
+        <div class="code">&lt;link rel="stylesheet" href="styles.css"&gt;</div>
+    </div>
+
+    <h2>CSS Properties Examples</h2>
+    <div class="example">
+        <h3>Box Model</h3>
+        <div class="box">Standard Box</div>
+        <div class="code">width: 200px;
+            height: 100px;
+            border: 2px solid #333;</div>
+    </div>
+
+    <div class="example">
+        <h3>Border Radius</h3>
+        <div class="box rounded">Rounded Box</div>
+        <div class="code">border-radius: 15px;</div>
+    </div>
+
+    <div class="example">
+        <h3>Box Shadow</h3>
+        <div class="box shadow">Box with Shadow</div>
+        <div class="code">box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);</div>
+    </div>
+
+    <h2>Color Properties Examples</h2>
+    <div class="example">
+        <h3>Text Color</h3>
+        <p class="color-example text-color">This text is red.</p>
+        <div class="code">color: red;</div>
+    </div>
+
+    <div class="example">
+        <h3>Background Color</h3>
+        <p class="color-example background-color">This box has a yellow background.</p>
+        <div class="code">background-color: yellow;</div>
+    </div>
+
+    <div class="example">
+        <h3>Border Color</h3>
+        <p class="color-example border-color">This box has a blue border.</p>
+        <div class="code">border: 2px solid blue;</div>
+    </div>
+
+    <div class="example">
+        <h3>Gradient Background</h3>
+        <p class="color-example gradient">This box has a gradient background.</p>
+        <div class="code">background: linear-gradient(to right, red, orange);
+            color: white;</div>
+    </div>
+
+    <h2>Text Manipulation Examples</h2>
+    <div class="example">
+        <h3>Text Transform</h3>
+        <p class="text-transform">This text is transformed to uppercase.</p>
+        <div class="code">text-transform: uppercase;</div>
+    </div>
+
+    <div class="example">
+        <h3>Text Alignment</h3>
+        <p class="text-align">This text is centered.</p>
+        <div class="code">text-align: center;</div>
+    </div>
+
+    <div class="example">
+        <h3>Letter Spacing</h3>
+        <p class="letter-spacing">This text has increased letter spacing.</p>
+        <div class="code">letter-spacing: 3px;</div>
+    </div>
+
+    <div class="example">
+        <h3>Word Spacing</h3>
+        <p class="word-spacing">This text has increased word spacing.</p>
+        <div class="code">word-spacing: 10px;</div>
+    </div>
+
+    <div class="example">
+        <h3>Line Height</h3>
+        <p class="line-height">This text has increased line height for better readability.</p>
+        <div class="code">line-height: 2;</div>
+    </div>
+
+    <div class="example">
+        <h3>Text Font</h3>
+        <p class="font-family">This text has a different font.</p>
+        <div class="code">font-family: "Times New Roman";</div>
+    </div>
+
+    <h2>Table Manipulation Examples</h2>
+    <div class="example">
+        <h3>Styling Table Borders</h3>
+        <table class="border-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>John</td>
+                    <td>25</td>
+                    <td>USA</td>
+                </tr>
+                <tr>
+                    <td>Maria</td>
+                    <td>30</td>
+                    <td>Canada</td>
+                </tr>
+                <tr>
+                    <td>Alex</td>
+                    <td>22</td>
+                    <td>UK</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="code">.border-table {
+            &nbsp;&nbsp;border: 2px solid black;
+            &nbsp;&nbsp;border-collapse: collapse;
+            }
+            .border-table th, .border-table td {
+            &nbsp;&nbsp;padding: 10px;
+            &nbsp;&nbsp;border: 1px solid #ddd;
+            }</div>
+    </div>
+
+    <div class="example">
+        <h3>Table Header Styling</h3>
+        <table class="header-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>John</td>
+                    <td>25</td>
+                    <td>USA</td>
+                </tr>
+                <tr>
+                    <td>Maria</td>
+                    <td>30</td>
+                    <td>Canada</td>
+                </tr>
+                <tr>
+                    <td>Alex</td>
+                    <td>22</td>
+                    <td>UK</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="code">.header-table th {
+            &nbsp;&nbsp;background-color: #4CAF50;
+            &nbsp;&nbsp;color: white;
+            &nbsp;&nbsp;text-align: center;
+            }
+            .header-table td {
+            &nbsp;&nbsp;text-align: center;
+            }</div>
+    </div>
+
+    <div class="example">
+        <h3>Alternating Row Colors</h3>
+        <table class="alternate-rows">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>John</td>
+                    <td>25</td>
+                    <td>USA</td>
+                </tr>
+                <tr>
+                    <td>Maria</td>
+                    <td>30</td>
+                    <td>Canada</td>
+                </tr>
+                <tr>
+                    <td>Alex</td>
+                    <td>22</td>
+                    <td>UK</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="code">.alternate-rows tr:nth-child(even) {
+            &nbsp;&nbsp;background-color: #f2f2f2;
+            }
+            .alternate-rows td {
+            &nbsp;&nbsp;padding: 8px;
+            }</div>
+    </div>
+
+    <div class="example">
+        <h3>Hover Effect on Rows</h3>
+        <table class="hover-effect">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>John</td>
+                    <td>25</td>
+                    <td>USA</td>
+                </tr>
+                <tr>
+                    <td>Maria</td>
+                    <td>30</td>
+                    <td>Canada</td>
+                </tr>
+                <tr>
+                    <td>Alex</td>
+                    <td>22</td>
+                    <td>UK</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="code">.hover-effect tr:hover {
+            &nbsp;&nbsp;background-color: #ddd;
+            }</div>
+    </div>
+
+    <div class="example">
+        <h3>Table with Responsive Design</h3>
+        <div class="table-wrapper">
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Country</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John</td>
+                        <td>25</td>
+                        <td>USA</td>
+                    </tr>
+                    <tr>
+                        <td>Maria</td>
+                        <td>30</td>
+                        <td>Canada</td>
+                    </tr>
+                    <tr>
+                        <td>Alex</td>
+                        <td>22</td>
+                        <td>UK</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="code">.table-wrapper {
+            &nbsp;&nbsp;overflow-x: auto;
+            &nbsp;&nbsp;max-width: 100%;
+            }
+            .responsive-table {
+            &nbsp;&nbsp;width: 100%;
+            &nbsp;&nbsp;border-collapse: collapse;
+            }
+            .responsive-table th, .responsive-table td {
+            &nbsp;&nbsp;padding: 12px;
+            &nbsp;&nbsp;border: 1px solid #ddd;
+            }</div>
+    </div>
+
+    <h2>Sizing and Spacing Examples</h2>
+    <div class="example">
+        <h3>Width Example</h3>
+        <div class="width-example">This box has a width of 50%.</div>
+        <div class="code">width: 50%;
+            background-color: lightgreen;</div>
+    </div>
+
+    <div class="example">
+        <h3>Height Example</h3>
+        <div class="height-example">This box has a height of 150px.</div>
+        <div class="code">height: 150px;
+            background-color: lightcoral;</div>
+    </div>
+
+    <div class="example">
+        <h3>Padding Example</h3>
+        <div class="padding-example">This box has 30px padding.</div>
+        <div class="code">padding: 30px;
+            background-color: lightyellow;</div>
+    </div>
+
+    <div class="example">
+        <h3>Margin Example</h3>
+        <div class="margin-example">This box has 30px margin.</div>
+        <div class="code">margin: 30px;
+            background-color: lightblue;</div>
+    </div>
+</body>
+
+</html>
