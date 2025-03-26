@@ -27,9 +27,9 @@ export default function Web() {
 				<ul>
 					{web.map((page, index) => (
 						<li key={index} className="list-item">
-							<Link href={page.url} target="_blank" rel="noopener noreferrer" className="flex flex-col">
-								<span className="text-lg font-semibold">{page.name}</span>
-								<span className="text-sm text-neutral-400">{page.url}</span>
+							<Link href={page.url} target="_blank" rel="noopener noreferrer" className="list-item-container">
+								<span className="list-item-title">{page.name}</span>
+								<span className="list-item-description">{page.url}</span>
 							</Link>
 						</li>
 					))}

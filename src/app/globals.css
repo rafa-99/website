@@ -50,6 +50,18 @@
   @apply block py-2 px-3 rounded transition hover:scale-105 hover:bg-neutral-700 cursor-pointer;
 }
 
+.list-item-container {
+  @apply flex flex-col
+}
+
+.list-item-title {
+  @apply text-lg font-semibold
+}
+
+.list-item-description {
+  @apply text-sm text-neutral-400 break-words
+}
+
 /* Strong text */
 strong {
   @apply text-white

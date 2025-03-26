@@ -44,9 +44,9 @@ export default function Projects() {
 				<ul>
 					{repos.map((repo) => (
 						<li key={repo.id} className="list-item">
-							<Link href={repo.html_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-								{repo.name}
-								{repo.description && <span className="text-sm text-neutral-400">{repo.description}</span>}
+							<Link href={repo.html_url} target="_blank" rel="noopener noreferrer" className="list-item-container">
+								<span className="list-item-title break-words">{repo.name}</span>
+								{repo.description && <span className="list-item-description">{repo.description}</span>}
 							</Link>
 						</li>
 					))}

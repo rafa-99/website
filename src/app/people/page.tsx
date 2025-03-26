@@ -8,7 +8,6 @@ export default function People() {
 		{ name: "DistroTube", url: "https://distro.tube/" },
 		{ name: "Drew DeVault's blog", url: "https://drewdevault.com/" },
 		{ name: "Eric Murphy", url: "https://ericmurphy.xyz/" },
-		{ name: "Gentoomen", url: "https://g.sicp.me/" },
 		{ name: "Kris Occhipinti", url: "https://filmsbykris.com/" },
 		{ name: "Luke Smith", url: "https://lukesmith.xyz/" },
 		{ name: "Mental Outlaw", url: "https://www.youtube.com/c/MentalOutlaw/" },
@@ -26,9 +25,9 @@ export default function People() {
 				<ul>
 					{people.map((person, index) => (
 						<li key={index} className="list-item">
-							<Link href={person.url} target="_blank" rel="noopener noreferrer" className="flex flex-col">
-								<span className="text-lg font-semibold">{person.name}</span>
-								<span className="text-sm text-neutral-400">{person.url}</span>
+							<Link href={person.url} target="_blank" rel="noopener noreferrer" className="list-item-container">
+								<span className="list-item-title">{person.name}</span>
+								<span className="list-item-description">{person.url}</span>
 							</Link>
 						</li>
 					))}
