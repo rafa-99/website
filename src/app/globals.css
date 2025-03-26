@@ -2,42 +2,20 @@
 
 /* Sidebar */
 .sidebar {
-  @apply w-40 lg:w-64 bg-neutral-950 text-white p-5 transition-all duration-300 ease-in-out shadow-lg shadow-black/50 z-0;
+  @apply w-15 lg:w-48 py-2 px-3 bg-neutral-950 text-white transition-all duration-300 ease-in-out shadow-lg shadow-black/50 z-0;
   position: relative;
 }
 
-/* Collapsed Sidebar */
-.sidebar.collapsed {
-  @apply w-15; /* Reduced width when collapsed */
+.sidebar-container {
+  @apply mt-4 space-y-2
 }
 
-/* Sidebar Toggle Button */
-.sidebar-toggle-btn {
-  @apply absolute top-5 right-5 text-white bg-transparent border-none text-xl cursor-pointer;
+.sidebar-link {
+	@apply justify-center text-3xl lg:text-base lg:justify-start lg:text-base lg:px-3 p-2 flex transition rounded hover:scale-110 hover:bg-neutral-700 hover:font-bold;
 }
 
-/* Sidebar Content (hide when collapsed) */
-.sidebar h1,
-.sidebar-nav {
-  transition: opacity 0.3s ease;
-}
-
-/* Hide content when collapsed */
-.sidebar.collapsed h1,
-.sidebar.collapsed .sidebar-nav {
-  opacity: 0;
-  visibility: hidden; /* Ensures the content is hidden when collapsed */
-}
-
-/* Optional: Add some styling when the sidebar is collapsed to make it look cleaner */
-.sidebar.collapsed .sidebar-toggle-btn {
-  transform: rotate(180deg); /* Rotate button when collapsed */
-  transition: transform 0.3s ease-in-out;
-}
-
-/* Sidebar Navigation */
-.sidebar-nav a {
-	@apply block py-2 px-3 rounded transition hover:scale-110 hover:bg-neutral-700 hover:font-bold;
+.sidebar-label {
+  @apply ml-2 hidden lg:flex;
 }
 
 /* Main Content */
@@ -51,36 +29,36 @@
 }
 
 .list-item-container {
-  @apply flex flex-col
+  @apply flex flex-col;
 }
 
 .list-item-title {
-  @apply text-lg font-semibold
+  @apply text-lg font-semibold;
 }
 
 .list-item-description {
-  @apply text-sm text-neutral-400 break-words
+  @apply text-sm text-neutral-400 break-words;
 }
 
 /* Strong text */
 strong {
-  @apply text-white
+  @apply text-white;
 }
 
 /* Main Page Buttons */
 .button {
-  @apply m-2 hover:scale-110 text-white py-2 px-4 w-24 text-center rounded-lg transition
+  @apply m-2 hover:scale-110 text-white py-2 px-4 w-24 text-center rounded-lg transition;
 }
 
 /* Content Card */
 .card {
-  @apply bg-neutral-950 p-8 rounded-2xl shadow-lg lg:max-w-3/4 w-full
+  @apply bg-neutral-950 p-8 rounded-2xl shadow-lg lg:max-w-3/4 w-full;
 }
 
 .card-container {
-  @apply flex flex-col items-center justify-center
+  @apply flex flex-col items-center justify-center;
 }
 
 .card-title {
-  @apply text-2xl font-bold mb-4 text-center
+  @apply text-2xl font-bold mb-4 text-center;
 }
