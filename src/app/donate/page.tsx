@@ -18,9 +18,9 @@ export default function Donate() {
 	];
 
 	return (
-		<div className="flex flex-col items-center justify-center space-y-12">
-			<div className="bg-neutral-950 p-8 rounded-2xl shadow-lg max-w-1/2 w-full text-center">
-				<h1 className="text-2xl font-bold mb-4">Support me with crypto 💰</h1>
+		<div className="card-container">
+			<div className="card text-center">
+				<h1 className="card-title">Support me with crypto 💰</h1>
 				<p className="text-neutral-400 mb-6">Scan the QR code or copy the address to donate.</p>
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 					{wallets.map((wallet, index) => (

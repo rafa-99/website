@@ -2,8 +2,8 @@ import Link from 'next/link'
 
 export default function Home() {
 	return (
-		<div className="flex flex-col items-center justify-center">
-			<div className="bg-neutral-950 p-8 rounded-2xl shadow-lg max-w-1/2 w-full text-justify text-neutral-400">
+		<div className="card-container">
+			<div className="card text-justify text-neutral-400">
 				<h1 className="text-3xl font-bold mb-4 text-white text-center">Welcome to My Corner of the Internet 👨‍💻</h1>
 				<p className="m-4">
 					{`Hey there! I'm `}
@@ -28,15 +28,15 @@ export default function Home() {
 				</p>
 
 
-				<div className="m-6 flex justify-center space-x-4">
-					<Link href="/projects" className="bg-blue-500 hover:bg-blue-600 hover:scale-110 text-white py-2 px-4 rounded-lg transition">Projects</Link>
-					<Link href="/posts" className="bg-gray-500 hover:bg-gray-600 hover:scale-110 text-white py-2 px-4 rounded-lg transition">Posts</Link>
-					<Link href="/donate" className="bg-green-500 hover:bg-green-600 hover:scale-110 text-white py-2 px-4 rounded-lg transition">Donate</Link>
+				<div className="flex flex-wrap justify-center">
+					<Link href="/projects" className="button bg-blue-500 hover:bg-blue-600 ">Projects</Link>
+					<Link href="/posts" className="button bg-gray-500 hover:bg-gray-600">Posts</Link>
+					<Link href="/donate" className="button bg-green-500 hover:bg-green-600">Donate</Link>
 				</div>
 
 				<div className="m-6 text-center">
 					<p className="text-neutral-400">
-						📨 <Link href="mailto:public@rafaelmarcalo.xyz" className="text-blue-400 hover:underline">public@rafaelmarcalo.xyz</Link>
+						📨 <Link href="mailto:public@rafaelmarcalo.xyz" className="text-blue-400 hover:underline break-words">public@rafaelmarcalo.xyz</Link>
 					</p>
 				</div>
 			</div>

@@ -77,8 +77,8 @@ const formatData = (filename: string) => {
 };
 
 const PostList = ({ title, filenames, pathPrefix }: PostListProps) => (
-	<div className="bg-neutral-950 p-8 rounded-2xl shadow-lg max-w-1/2 w-full">
-		<h1 className="text-2xl font-bold mb-4">{title}</h1>
+	<div className="card">
+		<h1 className="card-title">{title}</h1>
 		<ul className="flex flex-col-reverse">
 			{filenames.map((filename: string) => {
 				const { formattedDate, cleanFilename } = formatData(filename);
@@ -108,7 +108,7 @@ export default async function Posts() {
 		const legacyFilenames = await fs.readdir(legacyPostsDir);
 
 		return (
-			<div className="flex flex-col items-center justify-center space-y-12">
+			<div className="card-container space-y-12">
 				<PostList title="Latest Posts 📝" filenames={latestFilenames} pathPrefix="current" />
 				<PostList title="Legacy Posts 📜" filenames={legacyFilenames} pathPrefix="legacy" />
 			</div>

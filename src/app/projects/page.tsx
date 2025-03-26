@@ -38,9 +38,9 @@ export default function Projects() {
 	if (error) return <div className="text-red-500 text-center">{error}</div>;
 
 	return (
-		<div className="flex flex-col items-center justify-center space-y-12">
-			<div className="bg-neutral-950 p-8 rounded-2xl shadow-lg max-w-1/2 w-full">
-				<h1 className="text-2xl font-bold mb-4">GitHub Projects 🧪</h1>
+		<div className="card-container">
+			<div className="card">
+				<h1 className="card-title">GitHub Projects 🧪</h1>
 				<ul>
 					{repos.map((repo) => (
 						<li key={repo.id} className="list-item">

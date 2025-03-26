@@ -2,7 +2,7 @@
 
 /* Sidebar */
 .sidebar {
-  @apply w-64 bg-neutral-950 text-white p-5 transition-all duration-300 ease-in-out shadow-lg shadow-black/50 z-0;
+  @apply w-40 lg:w-64 bg-neutral-950 text-white p-5 transition-all duration-300 ease-in-out shadow-lg shadow-black/50 z-0;
   position: relative;
 }
 
@@ -53,4 +53,22 @@
 /* Strong text */
 strong {
   @apply text-white
+}
+
+/* Main Page Buttons */
+.button {
+  @apply m-2 hover:scale-110 text-white py-2 px-4 w-24 text-center rounded-lg transition
+}
+
+/* Content Card */
+.card {
+  @apply bg-neutral-950 p-8 rounded-2xl shadow-lg lg:max-w-3/4 w-full
+}
+
+.card-container {
+  @apply flex flex-col items-center justify-center
+}
+
+.card-title {
+  @apply text-2xl font-bold mb-4 text-center
 }

@@ -30,9 +30,9 @@ export default function Library() {
 	});
 
 	return (
-		<div className="flex flex-col items-center justify-center space-y-12">
-			<div className="bg-neutral-950 p-8 rounded-2xl shadow-lg max-w-1/2 w-full">
-				<h1 className="text-2xl font-bold mb-4">Library 📚</h1>
+		<div className="card-container">
+			<div className="card">
+				<h1 className="card-title">Library 📚</h1>
 				{Object.keys(categorizedBooks)
 					.sort()
 					.map((letter) => (
